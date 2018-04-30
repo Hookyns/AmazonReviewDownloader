@@ -44,7 +44,6 @@
     <Compile Include="AmazonProduct.cs" />
     <Compile Include="AmazonProductReview.cs" />
     <Compile Include="DataGetters\ProductReviewGetter.cs" />
-    <Compile Include="IConstructable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestDescriptors\IRequestDescriptor.cs" />
     <Compile Include="RequestDescriptors\ProductReviewRequestDescriptor.cs" />

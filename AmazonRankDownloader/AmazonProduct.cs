@@ -34,10 +34,10 @@ namespace AmazonRankDownloader
 		/// Vrátí hodnocení produktu
 		/// </summary>
 		/// <returns></returns>
-		public Task<ICollection<AmazonProductReview>> GetReviews(Action<string> progressReporter)
+		public Task<ICollection<AmazonProductReview>> GetReviews(int fromPage, int pageCount, Action<string> progressReporter = null)
 		{
 			var req = new ProductReviewGetter();
-			return req.GetReviews(this, progressReporter);
+			return req.GetReviews(this, fromPage, pageCount, progressReporter);
 		}
 
 		#endregion

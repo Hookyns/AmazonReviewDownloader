@@ -13,20 +13,29 @@ namespace AmazonRankDownloader.DataGetters
 	{
 		#region Methods
 
-		public async Task<ICollection<AmazonProductReview>> GetReviews(AmazonProduct product, Action<string> progressReporter)
+		public async Task<ICollection<AmazonProductReview>> GetReviews(AmazonProduct product, 
+			int fromPage, int pageCount, Action<string> progressReporter)
 		{
+			if (fromPage < 0)
+				throw new ArgumentException(nameof(fromPage));
+
+			if (pageCount < 1)
+				throw new ArgumentException(nameof(pageCount));
+
 			using (var req = new AmazonAjaxRequest<ProductReviewRequestDescriptor, ProductReviewResponseParser, AmazonProductReview>())
 			{
 				var results = new List<AmazonProductReview>();
 
 				try
 				{
-					for (int i = 0; i < 200; i++) // 200x stažení
+					int c = fromPage + pageCount;
+
+					for (int i = fromPage; i < c; i++)
 					{
 						results.AddRange(
-								await req.GetResponseFor(new ProductReviewRequestDescriptor(product, i, pageSize: 10)) // 10 položek
+								await req.GetResponseFor(new ProductReviewRequestDescriptor(product, i, pageSize: 10)) // 10 položek na stráku
 							);
-						progressReporter.Invoke($"Iteration {i} finished.");
+						if (progressReporter != null) progressReporter.Invoke($"Iteration {i} finished.");
 					}
 				}
 				catch (Exception ex) // Pokud nastane chyba, vrátí alespoň to co se zatím podařilo stáhnout; Je dost možné, že server dočasně zablokoval IP

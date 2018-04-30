@@ -13,7 +13,7 @@ namespace AmazonRankDownloader.Console
 
 		private static async void PrintReviews(AmazonProduct product)
 		{
-			var reviews = await product.GetReviews(message =>
+			var reviews = await product.GetReviews(0, 20, progressReporter: message =>
 			{
 				System.Console.WriteLine(message);
 			});
